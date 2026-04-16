@@ -1,8 +1,72 @@
 [
   {
+    "index": 2496747,
+    "address": "0xd71B7434472dF26FA15f9c67a38fE1999e4f2293",
+    "price_usd": 16457.19,
+    "token_a": {
+      "address": "0x847fD1a388e0Eb389941284eC57f851d6821F4D8",
+      "name": "Viking",
+      "symbol": "VIK"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T10:10:25+00:00"
+  },
+  {
+    "index": 2496745,
+    "address": "0x87C63A3C2B74b00e1e32e6Ca030D79a24ADE281E",
+    "price_usd": 12887.21,
+    "token_a": {
+      "address": "0x222B573f6acC6D823E2156e3C4BA22e005fF6aA8",
+      "name": "tx",
+      "symbol": "TX"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T10:09:56+00:00"
+  },
+  {
+    "index": 2496744,
+    "address": "0x4C1E0F466986f41d4BA826835cb7614DEFfc00d9",
+    "price_usd": 9325.35,
+    "token_a": {
+      "address": "0x02Dd4ec8528eff3c3EA1512DFC706Cf55Ae5581B",
+      "name": "SAFEMOON",
+      "symbol": "SMOON"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": ""
+  },
+  {
+    "index": 2496743,
+    "address": "0x2Df088c7F139d556DD553103E75B024Dbdd45435",
+    "price_usd": 49444.14,
+    "token_a": {
+      "address": "0x00fF0Bb43AeEe20C98599265d44fAE8C10488979",
+      "name": "Wojak Rocket",
+      "symbol": "WR"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T10:07:47+00:00"
+  },
+  {
     "index": 2496740,
     "address": "0xcBC4560bb578d3ef6e29B90Ee579b9fF0668F735",
-    "price_usd": 27407.16,
+    "price_usd": 57425.63,
     "token_a": {
       "address": "0x8c08E7C398e7CD68397791FC951e9aceF64c860D",
       "name": "金铲铲贵族",
@@ -13,12 +77,12 @@
       "name": "Wrapped BNB",
       "symbol": "WBNB"
     },
-    "registered": ""
+    "registered": "2026-04-16T10:04:51+00:00"
   },
   {
     "index": 2496739,
     "address": "0xDc54BDaC6a9FB35AEc362E8bc6Aa53eB101f1d94",
-    "price_usd": 7717.37,
+    "price_usd": 9082.58,
     "token_a": {
       "address": "0x9DdC09365db550e22766f42f7C08C6F59f0eE968",
       "name": "ROBOFISH",
@@ -32,25 +96,9 @@
     "registered": "2026-04-16T10:04:02+00:00"
   },
   {
-    "index": 2496738,
-    "address": "0x5393C36DEd9cB77CF0Fdd5A8BDB1210b133F54a1",
-    "price_usd": 27998.59,
-    "token_a": {
-      "address": "0x5Fa97084c8Fb29a2147924D934493cCbDC22B22A",
-      "name": "Kabosu Rocket",
-      "symbol": "KABO"
-    },
-    "token_b": {
-      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-      "name": "Wrapped BNB",
-      "symbol": "WBNB"
-    },
-    "registered": "2026-04-16T10:02:25+00:00"
-  },
-  {
     "index": 2496734,
     "address": "0x3178167638fc86B0CD668168Be71B3c79a6dC19E",
-    "price_usd": 15088.51,
+    "price_usd": 17286.73,
     "token_a": {
       "address": "0x37191f162E992A218044327C1e2c9d6a7D077777",
       "name": "🦋蝴蝶🦋",
@@ -66,7 +114,7 @@
   {
     "index": 2496727,
     "address": "0x177D8555458b25809F6f02Ab1a344953047dcda4",
-    "price_usd": 13466.58,
+    "price_usd": 13182.11,
     "token_a": {
       "address": "0x3a6DEA5D46A9c0cE0E6558212Bd16a84ec6cC983",
       "name": "GO CHAIN",
@@ -82,7 +130,7 @@
   {
     "index": 2496725,
     "address": "0xcd24F5479252A849f4CD3d98763F982D3371F67F",
-    "price_usd": 13306.71,
+    "price_usd": 13882.38,
     "token_a": {
       "address": "0xB566cef7A2d9E394936928Cbb5e53FB55dca6aD2",
       "name": "KillSwitch ",
@@ -98,7 +146,7 @@
   {
     "index": 2496723,
     "address": "0x4655D13cAF3E1C8c37Bf82E4C73F99639285721D",
-    "price_usd": 19727.41,
+    "price_usd": 20311.17,
     "token_a": {
       "address": "0x882eD7234365aE871d919fCAC61F518FA3c202a9",
       "name": "KOSPI 200 Index (Derivatives)",
@@ -112,41 +160,9 @@
     "registered": "2026-04-16T09:50:46+00:00"
   },
   {
-    "index": 2496715,
-    "address": "0xcaca92c7cf2E8d503E3C6307Ccba93d92322114A",
-    "price_usd": 20555.48,
-    "token_a": {
-      "address": "0x8B1f58dA32eaD997a2e53E87a80C471ebb0476B7",
-      "name": "R2 Protocol",
-      "symbol": "R2"
-    },
-    "token_b": {
-      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-      "name": "Wrapped BNB",
-      "symbol": "WBNB"
-    },
-    "registered": "2026-04-16T09:46:01+00:00"
-  },
-  {
-    "index": 2496701,
-    "address": "0x484b3f31406a132C31fCaE8ee857DaE07255aD16",
-    "price_usd": 65513.58,
-    "token_a": {
-      "address": "0x14Aee6bbD203BF60dB86Ea13e22F6a3EFEEE0EBb",
-      "name": "Red Cursor",
-      "symbol": "REDCURSOR"
-    },
-    "token_b": {
-      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-      "name": "Wrapped BNB",
-      "symbol": "WBNB"
-    },
-    "registered": "2026-04-16T09:31:27+00:00"
-  },
-  {
     "index": 2496698,
     "address": "0xafD520a63b1f636105c1cE696eb0aE8BFeac52B9",
-    "price_usd": 17105.58,
+    "price_usd": 18624.6,
     "token_a": {
       "address": "0x444464356929236985CE6403aE11aCABF83bAA0A",
       "name": "币安定义MEME图片",
@@ -160,25 +176,9 @@
     "registered": "2026-04-16T09:30:00+00:00"
   },
   {
-    "index": 2496694,
-    "address": "0x838132ade2f5e14d7281106415C5DEA85cEd867d",
-    "price_usd": 45136.42,
-    "token_a": {
-      "address": "0xb873b45d05a7f34b60205264b540613f09756127",
-      "name": "SPIKE (spikecoin.space)",
-      "symbol": "SPIKE"
-    },
-    "token_b": {
-      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-      "name": "Wrapped BNB",
-      "symbol": "WBNB"
-    },
-    "registered": "2026-04-16T09:24:31+00:00"
-  },
-  {
     "index": 2496687,
     "address": "0xb6491A404B211D433d249164F9Db18345B918319",
-    "price_usd": 124573.83,
+    "price_usd": 123687.51,
     "token_a": {
       "address": "0x4444928cb58659F677365DCDBDF10537DB6b77C4",
       "name": "BNTI",
@@ -194,7 +194,7 @@
   {
     "index": 2496685,
     "address": "0x382472f710C2a1fB982eA909725574fD7E92f822",
-    "price_usd": 9630.1,
+    "price_usd": 9318.31,
     "token_a": {
       "address": "0x150c567D9bCA2AC9e6A6aaef706cA253C86b4444",
       "name": "测测你的币圈人格",
@@ -210,7 +210,7 @@
   {
     "index": 2496682,
     "address": "0x1011D21b85802AFC6307A5FeB906B0A92f5f8971",
-    "price_usd": 6504.84,
+    "price_usd": 6063.18,
     "token_a": {
       "address": "0x7730cF947358f90c85E025AeBB4f9dE5f0214444",
       "name": "BNTI",
@@ -226,7 +226,7 @@
   {
     "index": 2496676,
     "address": "0x894e5654371FAEe85DF0949a250b9516dc3c38Ed",
-    "price_usd": 1087345.29,
+    "price_usd": 1273039.31,
     "token_a": {
       "address": "0x09b2421226AeDB028B392a1cE8204B2CBFe14AA3",
       "name": "币安人生",
@@ -238,5 +238,453 @@
       "symbol": "USDT"
     },
     "registered": "2026-04-16T09:17:42+00:00"
+  },
+  {
+    "index": 2496668,
+    "address": "0xFD0CF03C1215d03eA3c684C2766c5E5Acf439338",
+    "price_usd": 7006.43,
+    "token_a": {
+      "address": "0x0638C07A267963Cbab86045F7D96B2d779de7777",
+      "name": "pnc",
+      "symbol": "PNC"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T09:07:14+00:00"
+  },
+  {
+    "index": 2496667,
+    "address": "0xA637176B7f2860dc1918CE48d6d8e34edb8eF90c",
+    "price_usd": 59916.58,
+    "token_a": {
+      "address": "0x3120428c55efE75fA7f02d6CE6D95458F7B67a9F",
+      "name": "XMAQUINA",
+      "symbol": "DEUS"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T09:06:50+00:00"
+  },
+  {
+    "index": 2496665,
+    "address": "0xB8517db1A2B881d1e32Adc021a749A61394DA95B",
+    "price_usd": 6885.61,
+    "token_a": {
+      "address": "0xf9593064c440dfD4E35D30142120BAB0eBC24444",
+      "name": "币安油管meme",
+      "symbol": "合力"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T09:04:30+00:00"
+  },
+  {
+    "index": 2496644,
+    "address": "0xbB770B898Ccad7A7F4aD8bA483115a1A2F653Dd4",
+    "price_usd": 7787.52,
+    "token_a": {
+      "address": "0xa8f1289b4E003cADfce47f9d76202b5Aaf237777",
+      "name": "XLP",
+      "symbol": "XLP"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T08:48:48+00:00"
+  },
+  {
+    "index": 2496643,
+    "address": "0xC46A633b072ac5b3d919c7D7Da0eA3250C182Cbd",
+    "price_usd": 30584.2,
+    "token_a": {
+      "address": "0x4C62FfCcF473849160810282ea9447caE8deA7f0",
+      "name": "DPMCDEFI",
+      "symbol": "DPMC"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T08:43:08+00:00"
+  },
+  {
+    "index": 2496631,
+    "address": "0x0590052DB1089812E5EFda528C7eD4A531B0E371",
+    "price_usd": 17043.92,
+    "token_a": {
+      "address": "0xCE7d40273B2fF8dB9beAE0c45cd5e7B2906B1230",
+      "name": "R2 Protocol",
+      "symbol": "R2"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T08:31:26+00:00"
+  },
+  {
+    "index": 2496606,
+    "address": "0x72F8ea5F9F24Ec3faF0fCB462ac7E6CD0B020BaE",
+    "price_usd": 8800.81,
+    "token_a": {
+      "address": "0xf90056836b7d0ec8f27454F4bE346A2A4A157777",
+      "name": "币安银行",
+      "symbol": "币安银行"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T07:52:14+00:00"
+  },
+  {
+    "index": 2496599,
+    "address": "0x86A23d533D5220F9e2d9Df5454e21ACcD040D626",
+    "price_usd": 54145.05,
+    "token_a": {
+      "address": "0xec5d3f2Dae8e57719451Bc1c28Cb45eC9c0861D0",
+      "name": "Mars",
+      "symbol": "Mars"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T07:49:46+00:00"
+  },
+  {
+    "index": 2496579,
+    "address": "0x0489D2af815B542392761A6e2AE31B089aaf7d1F",
+    "price_usd": 17980.7,
+    "token_a": {
+      "address": "0x687ce38Cf7144DeD828fCa187D74cA123F1f7777",
+      "name": "熊猫烧香",
+      "symbol": "熊猫烧香"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T07:26:29+00:00"
+  },
+  {
+    "index": 2496563,
+    "address": "0xb60cF9951Cf3cf03F179e942Bf9Dc6113bEe5dC4",
+    "price_usd": 96330.76,
+    "token_a": {
+      "address": "0x8eDC7Def877d88902b6B274115A1F629bB95d45b",
+      "name": "Cambrian Network",
+      "symbol": "ClNRK"
+    },
+    "token_b": {
+      "address": "0x55d398326f99059fF775485246999027B3197955",
+      "name": "Tether USD",
+      "symbol": "USDT"
+    },
+    "registered": "2026-04-16T07:11:55+00:00"
+  },
+  {
+    "index": 2496562,
+    "address": "0x26Ea232362ca0F07d3A00f11c292E9fC5927021c",
+    "price_usd": 5667.98,
+    "token_a": {
+      "address": "0x849978A65eD61EF7366827cEA5d9265707574444",
+      "name": "CZ出生纪念日",
+      "symbol": "910"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T07:11:00+00:00"
+  },
+  {
+    "index": 2496530,
+    "address": "0xE228e43077aEcD7a34Be3375724f5d0Fe1E304DC",
+    "price_usd": 50016.0,
+    "token_a": {
+      "address": "0x55d398326f99059fF775485246999027B3197955",
+      "name": "Tether USD",
+      "symbol": "USDT"
+    },
+    "token_b": {
+      "address": "0x71f13A4f260B8B7426D8286f1CC38e8B64271705",
+      "name": "UCHAT",
+      "symbol": "UCHAT"
+    },
+    "registered": ""
+  },
+  {
+    "index": 2496527,
+    "address": "0xf667343e03954B12844C20689c3f6f240094cf84",
+    "price_usd": 74199.08,
+    "token_a": {
+      "address": "0x7Fd5c1BeFA4E43C0ebfCe7039DF08e87e5299999",
+      "name": "Bonus",
+      "symbol": "Bonus"
+    },
+    "token_b": {
+      "address": "0x55d398326f99059fF775485246999027B3197955",
+      "name": "Tether USD",
+      "symbol": "USDT"
+    },
+    "registered": "2026-04-16T06:28:42+00:00"
+  },
+  {
+    "index": 2496508,
+    "address": "0xC5931a1edE0608Af574E655dDF9F7f0ef72277Cd",
+    "price_usd": 57187.71,
+    "token_a": {
+      "address": "0xD1840869817f0185bCBac66de5cACf95F673F256",
+      "name": "BalckSilver Protocol",
+      "symbol": "BSP"
+    },
+    "token_b": {
+      "address": "0x43AB9d667BdF094f9Ed96687c5121a97013bE7c1",
+      "name": "BlockAie",
+      "symbol": "BAI"
+    },
+    "registered": "2026-04-16T06:11:11+00:00"
+  },
+  {
+    "index": 2496504,
+    "address": "0xCE9859C76dc0b4f7E4447D86436DD4D4aF4c9465",
+    "price_usd": 22026.36,
+    "token_a": {
+      "address": "0xF2063Caad914E20074715f748D28317Efd4e4444",
+      "name": "uncz",
+      "symbol": "老登"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T06:08:40+00:00"
+  },
+  {
+    "index": 2496489,
+    "address": "0x2065C45B3E5ceB4Ff5640e2B6cACEFd2BE9Fc050",
+    "price_usd": 44392.39,
+    "token_a": {
+      "address": "0x3890fF44c3cbEbcE553B12Dac8FC15E860d47eCC",
+      "name": "安小将",
+      "symbol": "安小将"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T05:53:55+00:00"
+  },
+  {
+    "index": 2496469,
+    "address": "0xC298A58D7B1cFbDb9d7aaf47B3fbD59b3f16c9BA",
+    "price_usd": 86548.03,
+    "token_a": {
+      "address": "0x2194617AfC71EC840D21773f52132A29b86c8FCd",
+      "name": "AVE",
+      "symbol": "AVE"
+    },
+    "token_b": {
+      "address": "0x55d398326f99059fF775485246999027B3197955",
+      "name": "Tether USD",
+      "symbol": "USDT"
+    },
+    "registered": "2026-04-16T05:31:15+00:00"
+  },
+  {
+    "index": 2496444,
+    "address": "0xad6ECD88831ed9c372E0F5eDC48eE69DbF83Aa63",
+    "price_usd": 25679.94,
+    "token_a": {
+      "address": "0x83c8c6d2A77a5a9B64458a626C802e20C3FD51E3",
+      "name": "Nexa Chain",
+      "symbol": "NXC"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T05:08:02+00:00"
+  },
+  {
+    "index": 2496437,
+    "address": "0x784718623B265f92b0a1f79D46Fb690550b6Bf0E",
+    "price_usd": 48856.4,
+    "token_a": {
+      "address": "0x584796b49033e5B99F8c25C1dC529bBCf2383f2F",
+      "name": "安小将",
+      "symbol": "安小将"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T05:02:28+00:00"
+  },
+  {
+    "index": 2496419,
+    "address": "0x211d7E06D8556E768beE29CA6b71b027Bb3A823A",
+    "price_usd": 1023285.52,
+    "token_a": {
+      "address": "0x634AD8AB7542487094bE178b549F4025AF71F84D",
+      "name": "Freedom of Money",
+      "symbol": "Freedom of Money"
+    },
+    "token_b": {
+      "address": "0x55d398326f99059fF775485246999027B3197955",
+      "name": "Tether USD",
+      "symbol": "USDT"
+    },
+    "registered": "2026-04-16T04:42:34+00:00"
+  },
+  {
+    "index": 2496406,
+    "address": "0x0b69238827808D5d63854457bFE858E290e179A3",
+    "price_usd": 70909.64,
+    "token_a": {
+      "address": "0x04A7C6C11FDa6B48Bc09e75f8D46AABe89e82A29",
+      "name": "Play",
+      "symbol": "PLAY"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T04:33:37+00:00"
+  },
+  {
+    "index": 2496397,
+    "address": "0x32bFc396107E4874F983d3CB92D4364Dde1C5978",
+    "price_usd": 56925.67,
+    "token_a": {
+      "address": "0x26F85aAd862ed974dF9AdaD85B6BC011243839Fe",
+      "name": "OpenGradient",
+      "symbol": "OPG"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T04:21:20+00:00"
+  },
+  {
+    "index": 2496381,
+    "address": "0x21e955f940B2f52b2732Cc55e5d5c1DfB42540C0",
+    "price_usd": 55135.71,
+    "token_a": {
+      "address": "0xEF614A4D657Fe2CB79EA981C865BF9D832C2b00c",
+      "name": "币安人生",
+      "symbol": "币安人生"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T03:58:46+00:00"
+  },
+  {
+    "index": 2496322,
+    "address": "0x552702DB7A19320ED8ab85405228359296AA0a39",
+    "price_usd": 60048.96,
+    "token_a": {
+      "address": "0x1e825CAc416391d288F991E28b1ad77F31a0Bb0d",
+      "name": "蝴蝶人生",
+      "symbol": "蝴蝶人生"
+    },
+    "token_b": {
+      "address": "0x55d398326f99059fF775485246999027B3197955",
+      "name": "Tether USD",
+      "symbol": "USDT"
+    },
+    "registered": "2026-04-16T02:48:53+00:00"
+  },
+  {
+    "index": 2496304,
+    "address": "0x3eEB33405f082B7d610014d5B38a907eE6242600",
+    "price_usd": 8205.28,
+    "token_a": {
+      "address": "0x18c429aF1f92b0BA6F6BFe08EF072fF544C54444",
+      "name": "航天吉祥物",
+      "symbol": "小白象"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T02:31:50+00:00"
+  },
+  {
+    "index": 2496281,
+    "address": "0x92aC1870934A1B604Db2Df62A07b2fbC43E901F4",
+    "price_usd": 54411.36,
+    "token_a": {
+      "address": "0x61DC9d1459dB62861C1575F1487d734011567777",
+      "name": "XChat",
+      "symbol": "XChat"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T02:08:15+00:00"
+  },
+  {
+    "index": 2496277,
+    "address": "0x67cBBE8989c6b4712Db8c78Aa140A2A939623274",
+    "price_usd": 5431.49,
+    "token_a": {
+      "address": "0xceCf856888aCDb58543d5B38bfa0b5f686347777",
+      "name": "首创双分红护盘机制",
+      "symbol": "金元宝"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T02:05:32+00:00"
+  },
+  {
+    "index": 2496254,
+    "address": "0x094D5B2B7DfE35Fd6631B82bF8dF7de0aF73c486",
+    "price_usd": 22839.04,
+    "token_a": {
+      "address": "0x0c8fe8Ca4a41a106115416a443b85035d4b24444",
+      "name": "BTCAT",
+      "symbol": "BTCAT"
+    },
+    "token_b": {
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB"
+    },
+    "registered": "2026-04-16T01:43:20+00:00"
   }
 ]
