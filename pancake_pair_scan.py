@@ -146,7 +146,7 @@ def write_outputs(contracts: list, txt_path: str, json_path: str, tokens_path: s
         for c in contracts:
             token_addr = get_new_token_address(c)
             if token_addr:
-                f.write(f"{token_addr}\n")
+                f.write(f"{BSCSCAN_ADDRESS_URL.format(token_addr)}\n")
 
 
 def main():
