@@ -5,6 +5,7 @@ Usage:
     python dump_contract.py                                        # prompts for address and chain
     python dump_contract.py --contract 0xADDRESS --chain bsc       # specify both
     python dump_contract.py --contract "https://bscscan.com/..."   # auto-detects chain from URL
+    python dump_contract.py --file contracts.txt                   # batch process from file
 """
 
 import argparse
@@ -96,8 +97,7 @@ def dump_contract(address: str, chain: str):
 
     chain_id = CHAIN_IDS.get(chain)
     if not chain_id:
-        print(f"Error: Unsupported chain '{chain}'. Supported: {', '.join(CHAIN_IDS)}")
-        sys.exit(1)
+        raise ValueError(f"Unsupported chain '{chain}'. Supported: {', '.join(CHAIN_IDS)}")
 
     print(f"Fetching contract {address} from {chain} (chainid={chain_id})...")
     result = get_contract_source(chain_id, address, api_key)
@@ -210,22 +210,8 @@ def detect_chain_from_address_input(address_input: str) -> tuple[str, str]:
     return "", address_input
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Dump smart contract source from Etherscan")
-    parser.add_argument("--contract", help="Contract address or full URL")
-    parser.add_argument("--chain", help=f"Chain: {', '.join(CHAIN_IDS)}")
-    args = parser.parse_args()
-
-    address = args.contract
-    chain = args.chain
-
-    if not address:
-        address = input("Enter contract address or full URL: ").strip()
-
-    if not address:
-        print("Error: No address provided")
-        sys.exit(1)
-
+def process_single(address: str, chain: str | None):
+    """Resolve chain and address, then dump the contract."""
     # Auto-detect chain from URL
     detected_chain, parsed_address = detect_chain_from_address_input(address)
     if detected_chain:
@@ -240,13 +226,74 @@ def main():
 
     if not chain or chain not in CHAIN_IDS:
         print(f"Error: Invalid chain '{chain}'. Supported: {', '.join(CHAIN_IDS)}")
-        sys.exit(1)
+        return False
 
     # Normalize address
     if not address.startswith("0x"):
         address = "0x" + address
 
     dump_contract(address, chain)
+    return True
+
+
+def process_file(file_path: str):
+    """Process a file containing one full URL per line."""
+    path = Path(file_path)
+    if not path.exists():
+        print(f"Error: File not found: {file_path}")
+        sys.exit(1)
+
+    lines = [line.strip() for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    if not lines:
+        print("Error: File is empty")
+        sys.exit(1)
+
+    total = len(lines)
+    success = 0
+    failed = []
+
+    for i, line in enumerate(lines, 1):
+        print(f"\n[{i}/{total}] Processing: {line}")
+        try:
+            if process_single(line, chain=None):
+                success += 1
+            else:
+                failed.append(line)
+        except Exception as e:
+            print(f"  Error: {e}")
+            failed.append(line)
+
+    print(f"\n{'='*50}")
+    print(f"Completed: {success}/{total} contracts")
+    if failed:
+        print(f"Failed ({len(failed)}):")
+        for f in failed:
+            print(f"  - {f}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Dump smart contract source from Etherscan")
+    parser.add_argument("--contract", help="Contract address or full URL")
+    parser.add_argument("--chain", help=f"Chain: {', '.join(CHAIN_IDS)}")
+    parser.add_argument("--file", help="File containing full URLs, one per line")
+    args = parser.parse_args()
+
+    # Batch mode
+    if args.file:
+        process_file(args.file)
+        return
+
+    # Single contract mode
+    address = args.contract
+    if not address:
+        address = input("Enter contract address or full URL: ").strip()
+
+    if not address:
+        print("Error: No address provided")
+        sys.exit(1)
+
+    if not process_single(address, args.chain):
+        sys.exit(1)
 
 
 if __name__ == "__main__":

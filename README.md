@@ -25,6 +25,9 @@ python dump_contract.py --contract 0xADDRESS --chain bsc
 
 # Paste a full URL (chain is auto-detected)
 python dump_contract.py --contract "https://bscscan.com/address/0x..."
+
+# Batch process from a file (one full URL per line)
+python dump_contract.py --file contracts.txt
 ```
 
 ### Supported Chains
