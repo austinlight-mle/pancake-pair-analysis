@@ -1,6 +1,6 @@
 # Smart Contract Tools
 
-Tools for inspecting and dumping smart contract data from EVM-compatible chains.
+Tools for inspecting and dumping smart contract data from BNB Chain.
 
 ## Setup
 
@@ -10,16 +10,46 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-Add your keys to `.env`:
+Add your BscScan API key to `.env`:
 
 ```
 ETHERSCAN_API=your_api_key_here
-BSC_RPC_URL=https://bsc-dataseed.binance.org/
+```
+
+Add BSC RPC URLs to `rpcs.txt`, one per line (multiple URLs provide fallback on rate limit errors):
+
+```
+https://bsc-dataseed.binance.org/
+https://bsc-dataseed1.defibit.io/
 ```
 
 ---
 
 ## Scripts
+
+### `pancake_pair_scan.py` — PancakeSwap Pair Scanner
+
+Scans PancakeSwap V2 pair contracts (most recent first), filters by USD liquidity, and writes qualifying pairs to output files. Supports multi-threaded scanning with automatic RPC fallback and retry on failure.
+
+```bash
+python pancake_pair_scan.py                                          # scan all pairs (recent first)
+python pancake_pair_scan.py --limit 500                              # scan only the latest 500 pairs
+python pancake_pair_scan.py --index 123456                           # scan a single pair at index 123456
+python pancake_pair_scan.py --start-index 100000                     # start from pair index 100000
+python pancake_pair_scan.py --end-index 50000                        # stop at pair index 50000
+python pancake_pair_scan.py --start-index 100000 --end-index 99000   # scan a specific range
+python pancake_pair_scan.py --min-liq 50000                          # minimum liquidity threshold (default: $10,000)
+python pancake_pair_scan.py --threads 8                              # worker threads (default: 4)
+python pancake_pair_scan.py --max-retries 10                         # max retries per call (default: 5)
+```
+
+**Output:**
+- `pair_contracts.txt` — one BscScan URL per line for each qualifying pair
+- `contracts.json` — array of objects with `index`, `address`, `price_usd`, `token_a`, `token_b`, `registered`
+- `new_tokens.txt` — BscScan URLs for the non-base token in each qualifying pair (excludes WBNB/USDT)
+- `scan.log` — timestamped start/end entries for each scan run
+
+---
 
 ### `dump_contract.py` — Contract Source Dumper
 
@@ -34,30 +64,4 @@ python dump_contract.py --file contracts.txt                   # batch process f
 
 **Supported chains:** `eth`, `bsc`, `polygon`, `arbitrum`, `optimism`, `avalanche`, `fantom`, `base`
 
-**Output** → `contracts/<address>/` containing `sources/`, `abi.json`, `settings.json`, `bytecode.txt`, `constructor_args.txt`.
-
----
-
-### `pancake_pair_scan.py` — PancakeSwap Pair Scanner
-
-Scans all PancakeSwap V2 pair contracts (most recent first), filters by USD liquidity, and writes qualifying pairs to `contracts.txt` and `contracts.json`.
-
-- Reads pair addresses from the PancakeSwap V2 Factory (`0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73`) via BSC RPC.
-- Fetches liquidity data from the DexScreener API; falls back to on-chain reserves + token prices when a pair isn't indexed.
-- Skips pairs below the minimum liquidity threshold (default: $10,000).
-- Writes results incrementally so partial results are saved if interrupted.
-
-```bash
-python pancake_pair_scan.py                                    # scan all pairs (recent first)
-python pancake_pair_scan.py --limit 500                        # scan only the latest 500 pairs
-python pancake_pair_scan.py --index 123456                     # scan a single pair at index 123456
-python pancake_pair_scan.py --start-index 100000               # start from pair index 100000
-python pancake_pair_scan.py --end-index 50000                  # stop at pair index 50000
-python pancake_pair_scan.py --start-index 100000 --end-index 99000  # scan a specific range
-python pancake_pair_scan.py --min-liq 50000                    # set minimum liquidity to $50,000
-```
-
-**Output:**
-
-- `contracts.txt` — one BscScan URL per line for each qualifying pair.
-- `contracts.json` — array of objects with `index` (factory pair index), `address`, `price_usd` (total liquidity), `token_a`, `token_b`, and `registered` (pair creation timestamp).
+**Output** → `contracts/<address>/` containing `sources/`, `abi.json`, `settings.json`, `bytecode.txt`, `constructor_args.txt`
