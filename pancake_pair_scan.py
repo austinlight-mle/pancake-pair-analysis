@@ -15,6 +15,7 @@ Usage:
     python pancake_pair_scan.py --min-liq 50000                          # set minimum liquidity to $50,000
     python pancake_pair_scan.py --threads 8                              # use 8 worker threads (default: 4)
     python pancake_pair_scan.py --max-retries 10                         # max retries per call (default: 5)
+    python pancake_pair_scan.py --proxy-enabled true                     # enable proxy rotation from .env
 """
 
 import argparse
@@ -26,7 +27,10 @@ import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import requests
 from web3 import Web3
+from dotenv import load_dotenv
 from datetime import datetime, timezone
+
+load_dotenv()
 
 FACTORY_ADDRESS = "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73"
 
@@ -64,6 +68,70 @@ _w3_instances: dict = {}
 _w3_lock = threading.Lock()
 
 
+# ---------------------------------------------------------------------------
+# Proxy pool
+# ---------------------------------------------------------------------------
+
+class ProxyPool:
+    """Thread-safe round-robin proxy port rotator."""
+
+    def __init__(self, host: str, ports: list[int], user: str, password: str):
+        self._host = host
+        self._ports = ports
+        self._user = user
+        self._password = password
+        self._idx = 0
+        self._lock = threading.Lock()
+
+    def next_proxy(self) -> tuple[dict, int]:
+        """Return (proxies_dict, port) cycling through all ports."""
+        with self._lock:
+            port = self._ports[self._idx % len(self._ports)]
+            self._idx += 1
+        proxy_url = f"http://{self._user}:{self._password}@{self._host}:{port}"
+        return {"http": proxy_url, "https": proxy_url}, port
+
+    def __len__(self) -> int:
+        return len(self._ports)
+
+
+def parse_proxy_ports(ports_str: str) -> list[int]:
+    """Parse port spec: '8000-8010', '8000,8001,8002', '8000-8002,8005,8007-8010'."""
+    ports: list[int] = []
+    for part in ports_str.split(","):
+        part = part.strip()
+        if "-" in part:
+            start, end = part.split("-", 1)
+            ports.extend(range(int(start.strip()), int(end.strip()) + 1))
+        else:
+            ports.append(int(part))
+    return ports
+
+
+def load_proxy_pool() -> ProxyPool:
+    host = os.getenv("PROXY_HOST", "").strip()
+    ports_str = os.getenv("PROXY_PORTS", "").strip()
+    user = os.getenv("PROXY_USER", "").strip()
+    password = os.getenv("PROXY_PASSWORD", "").strip()
+
+    missing = [k for k, v in {
+        "PROXY_HOST": host, "PROXY_PORTS": ports_str,
+        "PROXY_USER": user, "PROXY_PASSWORD": password,
+    }.items() if not v]
+    if missing:
+        print(f"Error: Missing proxy config in .env: {', '.join(missing)}")
+        sys.exit(1)
+
+    ports = parse_proxy_ports(ports_str)
+    port_display = ports_str if len(ports) <= 5 else f"{ports[0]}-{ports[-1]} ({len(ports)} ports)"
+    print(f"Proxy enabled: {host} | ports: {port_display}")
+    return ProxyPool(host, ports, user, password)
+
+
+# ---------------------------------------------------------------------------
+# RPC helpers
+# ---------------------------------------------------------------------------
+
 def load_rpcs(path: str = "rpcs.txt") -> list[str]:
     if not os.path.exists(path):
         print(f"Error: {path} not found")
@@ -100,27 +168,63 @@ def rpc_call_with_retry(rpcs: list[str], call_fn, max_retries: int = DEFAULT_MAX
     raise last_exc or RuntimeError("All RPC retries exhausted")
 
 
-def http_get_with_retry(url: str, max_retries: int = DEFAULT_MAX_RETRIES, timeout: int = 10) -> requests.Response:
+# ---------------------------------------------------------------------------
+# HTTP helpers
+# ---------------------------------------------------------------------------
+
+def http_get_with_retry(
+    url: str,
+    max_retries: int = DEFAULT_MAX_RETRIES,
+    timeout: int = 10,
+    proxy_pool: ProxyPool | None = None,
+    logs: list | None = None,
+) -> requests.Response:
+    """
+    GET url with retry. If proxy_pool is set, each attempt uses the next proxy
+    port in round-robin order. Each attempt appends 'p:PORT/STATUS' (or 'ERR')
+    to logs when logs is not None.
+    """
     last_exc: Exception | None = None
     for _ in range(max_retries):
+        proxies, port = proxy_pool.next_proxy() if proxy_pool else (None, None)
+        resp = None
         try:
-            resp = requests.get(url, timeout=timeout)
+            resp = requests.get(url, timeout=timeout, proxies=proxies)
+            if logs is not None:
+                logs.append(f"p:{port}/{resp.status_code}" if port else str(resp.status_code))
             resp.raise_for_status()
             return resp
         except Exception as e:
+            # Log connection-level errors (resp is None → no status code logged yet)
+            if logs is not None and resp is None:
+                logs.append(f"p:{port}/ERR" if port else "ERR")
             last_exc = e
             time.sleep(RETRY_INTERVAL)
     raise last_exc or RuntimeError(f"HTTP GET failed: {url}")
 
 
-def get_token_price_usd(address: str, cache: dict, cache_lock: threading.Lock, max_retries: int) -> float | None:
+# ---------------------------------------------------------------------------
+# DexScreener / price helpers
+# ---------------------------------------------------------------------------
+
+def get_token_price_usd(
+    address: str,
+    cache: dict,
+    cache_lock: threading.Lock,
+    max_retries: int,
+    proxy_pool: ProxyPool | None = None,
+    logs: list | None = None,
+) -> float | None:
     addr_lower = address.lower()
     with cache_lock:
         if addr_lower in cache:
             return cache[addr_lower]
     result = None
     try:
-        resp = http_get_with_retry(DEXSCREENER_TOKENS_URL.format(address), max_retries)
+        resp = http_get_with_retry(
+            DEXSCREENER_TOKENS_URL.format(address), max_retries,
+            proxy_pool=proxy_pool, logs=logs,
+        )
         pairs = resp.json()
         if isinstance(pairs, list) and pairs:
             price = pairs[0].get("priceUsd")
@@ -133,9 +237,17 @@ def get_token_price_usd(address: str, cache: dict, cache_lock: threading.Lock, m
     return result
 
 
-def query_pair_dexscreener(pair_address: str, max_retries: int) -> dict | None:
+def query_pair_dexscreener(
+    pair_address: str,
+    max_retries: int,
+    proxy_pool: ProxyPool | None = None,
+    logs: list | None = None,
+) -> dict | None:
     try:
-        resp = http_get_with_retry(DEXSCREENER_PAIRS_URL.format(pair_address), max_retries)
+        resp = http_get_with_retry(
+            DEXSCREENER_PAIRS_URL.format(pair_address), max_retries,
+            proxy_pool=proxy_pool, logs=logs,
+        )
         data = resp.json()
         return data.get("pair") or (data.get("pairs") or [None])[0]
     except Exception:
@@ -143,8 +255,13 @@ def query_pair_dexscreener(pair_address: str, max_retries: int) -> dict | None:
 
 
 def calc_liquidity_from_reserves(
-    rpcs: list[str], pair_address: str, price_cache: dict,
-    price_cache_lock: threading.Lock, max_retries: int
+    rpcs: list[str],
+    pair_address: str,
+    price_cache: dict,
+    price_cache_lock: threading.Lock,
+    max_retries: int,
+    proxy_pool: ProxyPool | None = None,
+    logs: list | None = None,
 ) -> tuple:
     try:
         def fetch(w3):
@@ -166,8 +283,8 @@ def calc_liquidity_from_reserves(
 
         t0, t1, reserves, dec0, dec1, sym0, sym1, name0, name1 = rpc_call_with_retry(rpcs, fetch, max_retries)
 
-        p0 = get_token_price_usd(t0, price_cache, price_cache_lock, max_retries)
-        p1 = get_token_price_usd(t1, price_cache, price_cache_lock, max_retries)
+        p0 = get_token_price_usd(t0, price_cache, price_cache_lock, max_retries, proxy_pool, logs)
+        p1 = get_token_price_usd(t1, price_cache, price_cache_lock, max_retries, proxy_pool, logs)
 
         val = 0.0
         if p0 is not None:
@@ -180,11 +297,22 @@ def calc_liquidity_from_reserves(
         return None, None, None
 
 
+# ---------------------------------------------------------------------------
+# Pair processor
+# ---------------------------------------------------------------------------
+
 def process_pair(
-    i: int, rpcs: list[str], price_cache: dict, price_cache_lock: threading.Lock,
-    min_liq: float, max_retries: int
+    i: int,
+    rpcs: list[str],
+    price_cache: dict,
+    price_cache_lock: threading.Lock,
+    min_liq: float,
+    max_retries: int,
+    proxy_pool: ProxyPool | None = None,
 ) -> tuple:
     """Process a single pair index. Returns (i, contract_dict_or_None, status_msg)."""
+    proxy_logs: list[str] = []
+
     try:
         def get_addr(w3):
             factory = w3.eth.contract(address=Web3.to_checksum_address(FACTORY_ADDRESS), abi=FACTORY_ABI)
@@ -194,7 +322,7 @@ def process_pair(
     except Exception as e:
         return i, None, f"error fetching address: {e}"
 
-    pair_data = query_pair_dexscreener(pair_address, max_retries)
+    pair_data = query_pair_dexscreener(pair_address, max_retries, proxy_pool, proxy_logs)
 
     if pair_data:
         liquidity_usd = (pair_data.get("liquidity") or {}).get("usd") or 0
@@ -206,14 +334,17 @@ def process_pair(
         registered = datetime.fromtimestamp(created_at / 1000, tz=timezone.utc).isoformat() if created_at else ""
     else:
         liquidity_usd, token_a, token_b = calc_liquidity_from_reserves(
-            rpcs, pair_address, price_cache, price_cache_lock, max_retries
+            rpcs, pair_address, price_cache, price_cache_lock, max_retries, proxy_pool, proxy_logs
         )
         if liquidity_usd is None:
-            return i, None, f"{pair_address} ⏭ no data"
+            suffix = f"  [{' '.join(proxy_logs)}]" if proxy_logs else ""
+            return i, None, f"{pair_address} ⏭ no data{suffix}"
         registered = ""
 
+    proxy_suffix = f"  [{' '.join(proxy_logs)}]" if proxy_logs else ""
+
     if liquidity_usd < min_liq:
-        return i, None, f"{pair_address} ${liquidity_usd:,.0f} ⏭ below threshold"
+        return i, None, f"{pair_address} ${liquidity_usd:,.0f} ⏭ below threshold{proxy_suffix}"
 
     sym_a = (token_a or {}).get("symbol", "?")
     sym_b = (token_b or {}).get("symbol", "?")
@@ -225,8 +356,12 @@ def process_pair(
         "token_b": token_b,
         "registered": registered,
     }
-    return i, contract, f"{pair_address} ${liquidity_usd:,.0f} ✓ {sym_a}/{sym_b}"
+    return i, contract, f"{pair_address} ${liquidity_usd:,.0f} ✓ {sym_a}/{sym_b}{proxy_suffix}"
 
+
+# ---------------------------------------------------------------------------
+# Output helpers
+# ---------------------------------------------------------------------------
 
 def get_new_token_address(contract: dict) -> str | None:
     addr_a = (contract.get("token_a") or {}).get("address", "").lower()
@@ -253,6 +388,18 @@ def write_outputs(contracts: list, txt_path: str, json_path: str, tokens_path: s
                 f.write(f"{BSCSCAN_ADDRESS_URL.format(token_addr)}\n")
 
 
+# ---------------------------------------------------------------------------
+# Entry point
+# ---------------------------------------------------------------------------
+
+def str_to_bool(v: str) -> bool:
+    if v.lower() == "true":
+        return True
+    if v.lower() == "false":
+        return False
+    raise argparse.ArgumentTypeError("Expected true or false")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Scan PancakeSwap V2 pairs by liquidity")
     parser.add_argument("--limit", type=int, default=0, help="Max number of pairs to scan (0 = all)")
@@ -265,7 +412,11 @@ def main():
                         help=f"Number of worker threads (default: {DEFAULT_THREADS})")
     parser.add_argument("--max-retries", type=int, default=DEFAULT_MAX_RETRIES,
                         help=f"Max retries per RPC/HTTP call (default: {DEFAULT_MAX_RETRIES})")
+    parser.add_argument("--proxy-enabled", type=str_to_bool, default=False, metavar="true|false",
+                        help="Enable proxy rotation via PROXY_* vars in .env (default: false)")
     args = parser.parse_args()
+
+    proxy_pool: ProxyPool | None = load_proxy_pool() if args.proxy_enabled else None
 
     rpcs = load_rpcs()
     print(f"Loaded {len(rpcs)} RPC URL(s) from rpcs.txt")
@@ -294,7 +445,8 @@ def main():
 
     print(
         f"Scanning index {start_index:,} → {end_index:,} ({scan_count:,} pairs) | "
-        f"Min liq: ${min_liq:,.0f} | Threads: {threads} | Max retries: {max_retries}\n"
+        f"Min liq: ${min_liq:,.0f} | Threads: {threads} | Max retries: {max_retries} | "
+        f"Proxy: {'enabled (' + str(len(proxy_pool)) + ' ports)' if proxy_pool else 'disabled'}\n"
     )
 
     contracts: list[dict] = []
@@ -309,7 +461,8 @@ def main():
     with open(log_path, "a", encoding="utf-8") as lf:
         lf.write(
             f"[{datetime.now(timezone.utc).isoformat()}] START "
-            f"start_index={start_index} end_index={end_index} threads={threads}\n"
+            f"start_index={start_index} end_index={end_index} threads={threads} "
+            f"proxy={'enabled' if proxy_pool else 'disabled'}\n"
         )
 
     indices = list(range(start_index, end_index - 1, -1))
@@ -317,7 +470,9 @@ def main():
 
     with ThreadPoolExecutor(max_workers=threads) as executor:
         futures = {
-            executor.submit(process_pair, i, rpcs, price_cache, price_cache_lock, min_liq, max_retries): i
+            executor.submit(
+                process_pair, i, rpcs, price_cache, price_cache_lock, min_liq, max_retries, proxy_pool
+            ): i
             for i in indices
         }
 
